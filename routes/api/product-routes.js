@@ -1,17 +1,31 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
-
+const {log} = console
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+
+  const currentProducts= await Product.findAll({
+    include:Tag,
+    include:Category
+  })
+  // console.log(currentCategory)
+  res.send(currentProducts)
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
+  const findID= req.params.id;
+  const SingleProduct = await Product.findOne({
+    where:{ id: findID  },
+    include:Category,
+    include:Tag
+  })
+  res.send(SingleProduct)
   // be sure to include its associated Category and Tag data
 });
 
@@ -92,8 +106,28 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  try {
+  
+    const RemoveID = req.params.id
+  
+    const CurrentProduct = await Product.findByPk(RemoveID)
+  
+    if (!CurrentProduct) {
+  
+      return res.send({ message: "ID is not found" })
+    
+    }
+  
+    await CurrentProduct.destroy()
+    res.send({message:`ID:${RemoveID} is removed`})
+  } catch (err) {
+    
+    log(err)
+
+    res.send(err)
+  }
 });
 
 module.exports = router;
