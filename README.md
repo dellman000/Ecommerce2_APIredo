@@ -17,7 +17,7 @@ Clone the repository, and run npm i, then login into potgres and run \i schema.s
 ## Usage
 You want to see how to use it:
 https://drive.google.com/file/d/1zxBXS7UA5TbC6lWbG-YxVE7T8Ech4TGG/view  
-![alt text](Capture.PNG)
+![alt text](Capture.png)
 ## Tests
 none
 ## Credits
